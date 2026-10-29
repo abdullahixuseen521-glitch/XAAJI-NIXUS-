@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="so">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XAAJI NEXUS AI</title>
+<style>
+:root{--bg:#07060f;--panel:#0f0d1f;--line:#2a2552;--v:#8b5cf6;--b:#2f6bff;--c:#22d3ee;--t:#e8e8f5;--m:#9a9ab8;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--t);
+background-image:radial-gradient(60rem 30rem at 85% -10%,rgba(139,92,246,.22),transparent 60%),radial-gradient(50rem 28rem at -10% 10%,rgba(47,107,255,.18),transparent 60%);background-attachment:fixed}
+header{position:sticky;top:0;z-index:5;background:rgba(7,6,15,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{max-width:1000px;margin:auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{font-weight:800;letter-spacing:.04em;text-shadow:0 0 22px rgba(139,92,246,.8)}
+nav{display:flex;gap:4px;overflow-x:auto;max-width:1000px;margin:auto;padding:0 14px 8px}
+button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--t);border-radius:12px;padding:8px 12px;white-space:nowrap}
+button:hover{border-color:var(--v)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--c)}
+button.on,.primary{background:linear-gradient(90deg,var(--v),var(--b));border-color:transparent;font-weight:600}
+main{max-width:1000px;margin:auto;padding:18px 14px 60px}
+section{display:none}section.show{display:block}
+.card{background:rgba(15,13,31,.85);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.hero{text-align:center;padding:44px 16px;border:1px solid var(--line);border-radius:22px;background:rgba(15,13,31,.6);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,var(--v),var(--b),var(--c),var(--v));opacity:.18;filter:blur(60px);animation:r 24s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.hero::before{animation:none}}
+.hero>*{position:relative}h1{font-size:clamp(2rem,7vw,3.6rem);margin:0 0 12px;text-shadow:0 0 28px rgba(139,92,246,.8)}
+h2{margin:0 0 10px}p{line-height:1.55}.m{color:var(--m);font-size:.9rem}
+input,select,textarea{width:100%;font:inherit;color:var(--t);background:#0a0918;border:1px solid var(--line);border-radius:12px;padding:10px;margin:4px 0 10px}
+.ttt,.mem{display:grid;gap:8px;max-width:340px;margin:auto}.ttt{grid-template-columns:repeat(3,1fr)}.mem{grid-template-columns:repeat(4,1fr)}
+.ttt button,.mem button{aspect-ratio:1;font-size:2rem;padding:0}.snk{display:grid;grid-template-columns:repeat(16,1fr);gap:1px;background:var(--line);max-width:340px;margin:auto;aspect-ratio:1;touch-action:none;border:1px solid var(--line)}
+.snk i{background:#0a0918}.snk .h{background:var(--c)}.snk .s{background:var(--v)}.snk .f{background:#f472b6;border-radius:50%}
+.pad{display:grid;grid-template-columns:repeat(3,52px);gap:4px;justify-content:center;margin-top:10px}.pad button{height:48px;padding:0}
+.bar2{height:8px;background:#0a0918;border-radius:99px;overflow:hidden}.bar2 div{height:100%;background:linear-gradient(90deg,var(--v),var(--c))}
+.note{background:rgba(139,92,246,.15);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:12px}.c{text-align:center}
+</style>
+</head>
+<body>
+<header><div class="bar"><span class="logo">XAAJI NEXUS AI</span><span><button id="ls" aria-label="Language">EN</button></span></div>
+<nav id="nav"></nav></header>
+<main>
+<section id="home" class="show">
+  <div class="hero"><h1>XAAJI NEXUS AI</h1><p id="welcome" style="max-width:640px;margin:auto"></p></div>
+  <div class="grid" id="cards" style="margin-top:14px"></div>
+</section>
+
+<section id="chat"><h2 data-i="chat"></h2><div class="card"><p data-i="chatNote"></p></div></section>
+
+<section id="games"><h2 data-i="games"></h2>
+  <div style="display:flex;gap:6px;margin-bottom:12px"><button data-g="ttt" class="on">Tic-Tac-Toe</button><button data-g="mem">Memory Match</button><button data-g="snk">Snake</button></div>
+  <div class="card c"><p class="m"><span data-i="score"></span>: <b id="sc">0</b> · <span data-i="best"></span>: <b id="bs">0</b></p><div id="arena"></div><p id="gmsg" style="min-height:1.4em;font-weight:600"></p>
+  <button id="restart" class="primary" data-i="restart"></button><div id="pad" class="pad" hidden></div></div>
+</section>
+
+<section id="learn"><h2 data-i="learn"></h2><div id="lessons"></div></section>
+
+<section id="studio"><h2 data-i="studio"></h2>
+  <div class="card"><div class="note" data-i="textOnly"></div>
+  <label><span data-i="topic"></span><input id="p-topic" maxlength="200"></label>
+  <label><span data-i="chars"></span><input id="p-chars" maxlength="200"></label>
+  <label><span data-i="loc"></span><input id="p-loc" maxlength="200"></label>
+  <label><span data-i="lang"></span><select id="p-lang"><option>Somali</option><option>English</option><option>Arabic</option></select></label>
+  <label><span data-i="style"></span><select id="p-style"><option>cinematic</option><option>animated 3D</option><option>documentary</option><option>anime</option></select></label>
+  <button id="gen" class="primary" data-i="gen"></button></div>
+  <div class="card" id="out-card" hidden><pre id="out" style="white-space:pre-wrap;font:inherit;margin:0"></pre><button id="copy" style="margin-top:10px" data-i="copy"></button></div>
+</section>
+
+<section id="notes"><h2 data-i="notes"></h2>
+  <div class="note" data-i="notesNote"></div>
+  <div class="grid"><input id="n-q" data-ph="search"><select id="n-cat"></select></div>
+  <div class="card"><input id="n-title" maxlength="120" data-ph="title"><textarea id="n-body" rows="4" maxlength="10000" data-ph="body"></textarea>
+  <select id="n-c2"></select><button id="n-save" class="primary" data-i="save"></button> <button id="n-cancel" data-i="cancel" hidden></button></div>
+  <div id="n-list" class="grid"></div>
+</section>
+
+<section id="support"><h2 data-i="support"></h2>
+  <div class="card"><p data-i="supNote"></p><div id="wa"></div></div>
+</section>
+
+<section id="account"><h2 data-i="account"></h2><div class="card"><p data-i="accNote"></p></div></section>
+</main>
+
+<script>
+// ===== CONFIG: official WhatsApp number, digits only with country code. Leave "" to show "not configured". =====
+const WHATSAPP = "";
+
+const D = {
+so:{home:"Hoyga",chat:"AI Wadahadal",games:"Ciyaaraha",learn:"Waxbarasho",studio:"Qalabka Abuurka",notes:"Buug-yare",support:"Taageero",account:"Akoon",
+welcome:"ASC! Ku soo dhawoow XAAJI NEXUS AI 🚀 Halkaan waxaad ka heli kartaa AI, ciyaaro, waxbarasho iyo qalab kaa caawinaya inaad fikradahaaga u beddesho wax dhab ah.",
+fChat:"La hadal AI-ga.",fGames:"Tic-Tac-Toe, Memory iyo Snake.",fLearn:"Casharro iyo horumar.",fStudio:"Prompts muuqaal iyo fikrado.",fNotes:"Qoraallo la raadin karo.",fSup:"Nala soo xiriir.",
+chatNote:"AI Wadahadalka dhabta ah wuxuu u baahan yahay server (furaha API ma ahan in lagu dhigo faylka HTML). Isticmaal mashruuca Next.js ee la socda (xaaji-nexus-ai.zip) oo dhis AI-ga halkaas. Halkan wax jawaab ah lama been abuurin.",
+score:"Dhibco",best:"Ugu sarreeya",restart:"Dib u bilow",win:"Waad guuleysatay!",lose:"Waad lumisay",draw:"Barbaro",over:"Ciyaarta way dhammaatay",start:"Bilow",
+steps:"Tallaabooyin",progress:"Horumar",
+textOnly:"Qoraal keliya: qalabkani ma abuuro muuqaal dhab ah.",topic:"Mawduuc",chars:"Jilayaasha",loc:"Goob",lang:"Luuqad",style:"Qaab",gen:"Samee prompt",copy:"Koobiyee",copied:"La koobiyeeyay ✓",
+notesNote:"Qoraalladan waxay ku kaydsan yihiin aaladdan (browser-kan) oo keliya. Kaydinta gaarka ah ee akoonka waxay u baahan tahay mashruuca Next.js.",
+search:"Raadi",title:"Cinwaan",body:"Qoraal",save:"Kaydi",cancel:"Jooji",edit:"Wax ka beddel",del:"Tirtir",all:"Dhammaan",empty:"Weli waxba ma jiraan.",
+cats:["Shakhsi","Dugsi","Shaqo","Fikrado"],
+supNote:"Foomka fariinta wuxuu u baahan yahay server si fariinta runtii loo helo, sidaas darteed halkan lagama diri karo. Isticmaal WhatsApp:",waBtn:"WhatsApp Taageero",waMissing:"Lambarka WhatsApp weli lama dejin (dejiso WHATSAPP faylka gudihiisa).",
+accNote:"Is-diiwaangelin, gelitaan, horumar la kaydiyo iyo maamule waxay u baahan yihiin server iyo database. Waxay ku jiraan mashruuca Next.js (xaaji-nexus-ai.zip). Faylkan HTML kuma lahan login been ah.",
+les:[["Tafatirka Muuqaalka","Baro sida loo gooyo oo loo dhammeeyo muuqaal gaaban.",["Dooro app tafatir (CapCut ama DaVinci Resolve)","Soo geli muuqaalada oo u habee timeline-ka","Goo qaybaha aan loo baahnayn oo ku dar musig iyo qoraal","Soo saar muuqaalka 1080p oo la wadaag"]],
+["AI iyo Qoritaanka Prompts","Baro sida loo weydiiyo AI.",["Sheeg hadafka si cad","Ku dar xaalada: cidda, goobta iyo qaabka","Codso qaab soo-saar gaar ah","Hagaaji jawaabta adigoo weydiinaya weydiimo dheeraad ah"]],
+["Horumarinta Website-ka","HTML, CSS iyo JavaScript.",["Baro HTML","Baro CSS","Ku dar JavaScript","Geli koodhka GitHub oo ku daabac Vercel"]],
+["Naqshadaynta Garaafiga","Midab, far iyo habayn.",["Dooro 2-3 midab oo is-leh","Dooro hal ama laba far","U habee walxaha adigoo isticmaalaya meel bannaan","Ku tijaabi shaashad yar"]],
+["Barnaamijka Aasaaska ah","Doorsoomayaal, shuruudo iyo loops.",["Fahan doorsoome iyo noocyada xogta","Isticmaal if/else","Isticmaal loops","Qor mashruuc yar, tusaale xisaabiye"]]]},
+en:{home:"Home",chat:"AI Chat",games:"Games",learn:"Learn",studio:"Creator Studio",notes:"Notebook",support:"Support",account:"Account",
+welcome:"Welcome to XAAJI NEXUS AI 🚀 Here you will find AI, games, learning and tools that help you turn your ideas into real things.",
+fChat:"Talk to AI.",fGames:"Tic-Tac-Toe, Memory and Snake.",fLearn:"Lessons and progress.",fStudio:"Video prompts and ideas.",fNotes:"Searchable notes.",fSup:"Contact us.",
+chatNote:"Real AI chat needs a server (an API key must never be placed in an HTML file). Use the included Next.js project (xaaji-nexus-ai.zip) for the AI. Nothing here is faked.",
+score:"Score",best:"Best",restart:"Restart",win:"You win!",lose:"You lost",draw:"Draw",over:"Game over",start:"Start",
+steps:"Steps",progress:"Progress",
+textOnly:"Text only: this tool does not create an actual video.",topic:"Topic",chars:"Characters",loc:"Location",lang:"Language",style:"Style",gen:"Generate prompt",copy:"Copy",copied:"Copied ✓",
+notesNote:"These notes are stored only on this device (this browser). Private account-based storage needs the Next.js project.",
+search:"Search",title:"Title",body:"Note",save:"Save",cancel:"Cancel",edit:"Edit",del:"Delete",all:"All",empty:"Nothing here yet.",
+cats:["Personal","School","Work","Ideas"],
+supNote:"A contact form needs a server to truly deliver the message, so it cannot be sent from this file. Use WhatsApp:",waBtn:"WhatsApp support",waMissing:"The WhatsApp number is not configured yet (set WHATSAPP in this file).",
+accNote:"Registration, login, saved progress and the admin area need a server and database. They are in the Next.js project (xaaji-nexus-ai.zip). This HTML file has no fake login.",
+les:[["Video Editing","Learn to cut and finish a short video.",["Pick an editing app (CapCut or DaVinci Resolve)","Import clips and arrange them on the timeline","Trim unwanted parts and add music and text","Export in 1080p and share"]],
+["AI Tools and Prompt Writing","Learn how to ask AI.",["State your goal clearly","Add context: audience, place and style","Ask for a specific output format","Refine with follow-up questions"]],
+["Website Development","HTML, CSS and JavaScript.",["Learn HTML","Learn CSS","Add JavaScript","Push your code to GitHub and publish on Vercel"]],
+["Graphic Design","Color, type and layout.",["Pick 2-3 colors that work together","Choose one or two fonts","Arrange elements using white space","Test on a small screen"]],
+["Basic Programming","Variables, conditions and loops.",["Understand variables and data types","Use if/else","Use loops","Write a small project, such as a calculator"]]]}
+};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let L=localStorage.getItem("lang")||"so",view="home",game="ttt",stop=null;
+const T=k=>D[L][k];
+const store={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const VIEWS=["home","chat","games","learn","studio","notes","support","account"];
+const ICON={chat:"🤖",games:"🎮",learn:"📚",studio:"🎬",notes:"📝",support:"💬"};
+const FEAT={chat:"fChat",games:"fGames",learn:"fLearn",studio:"fStudio",notes:"fNotes",support:"fSup"};
+
+function go(v){view=v;if(stop){stop();stop=null}VIEWS.forEach(x=>$("#"+x).classList.toggle("show",x===v));$$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="games")startGame();location.hash=v}
+function render(){
+  document.documentElement.lang=L;$("#ls").textContent=L==="so"?"EN":"SO";
+  $("#nav").innerHTML=VIEWS.map(v=>`<button data-v="${v}" class="${v===view?"on":""}">${T(v)}</button>`).join("");
+  $$("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+  $$("[data-i]").forEach(e=>e.textContent=T(e.dataset.i));$$("[data-ph]").forEach(e=>e.placeholder=T(e.dataset.ph));
+  $("#welcome").textContent=T("welcome");
+  $("#cards").innerHTML=Object.keys(FEAT).map(k=>`<div class="card" style="cursor:pointer" data-go="${k}"><div style="font-size:1.6rem">${ICON[k]}</div><h2>${T(k)}</h2><p class="m">${T(FEAT[k])}</p></div>`).join("");
+  $$("[data-go]").forEach(c=>c.onclick=()=>go(c.dataset.go));
+  const opts=T("cats").map((c,i)=>`<option value="${i}">${c}</option>`).join("");
+  $("#n-cat").innerHTML=`<option value="all">${T("all")}</option>`+opts;$("#n-c2").innerHTML=opts;
+  $("#wa").innerHTML=/^\d{8,15}$/.test(WHATSAPP)?`<a class="btn primary" style="display:inline-block;text-decoration:none;color:#fff" href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener noreferrer">${T("waBtn")}</a>`:`<p class="m">${T("waMissing")}</p>`;
+  renderLessons();renderNotes();if(view==="games")startGame();
+}
+$("#ls").onclick=()=>{L=L==="so"?"en":"so";localStorage.setItem("lang",L);render()};
+
+// ===== Lessons =====
+function renderLessons(){
+  const prog=store.get("progress",{});
+  $("#lessons").innerHTML=D[L].les.map((l,i)=>{const done=(prog[i]||[]).length,pct=Math.round(done/l[2].length*100);
+    return `<div class="card"><h2>${l[0]}</h2><p class="m">${l[1]}</p><div class="bar2"><div style="width:${pct}%"></div></div><p class="m">${T("progress")}: ${pct}%</p>
+    ${l[2].map((s,j)=>`<label style="display:flex;gap:8px;align-items:flex-start;margin:6px 0"><input type="checkbox" style="width:auto;margin:3px 0 0" data-l="${i}" data-s="${j}" ${(prog[i]||[]).includes(j)?"checked":""}><span>${s}</span></label>`).join("")}</div>`}).join("");
+  $$("#lessons input").forEach(c=>c.onchange=()=>{const p=store.get("progress",{}),a=new Set(p[c.dataset.l]||[]);c.checked?a.add(+c.dataset.s):a.delete(+c.dataset.s);p[c.dataset.l]=[...a];store.set("progress",p);renderLessons()});
+}
+
+// ===== Studio (template only, no AI) =====
+$("#gen").onclick=()=>{const t=$("#p-topic").value.trim();if(!t){$("#p-topic").focus();return}
+  const lines=[`Create a 15-second vertical (9:16) ${$("#p-style").value} video about: ${t}.`,$("#p-chars").value.trim()&&`Characters: ${$("#p-chars").value.trim()}.`,$("#p-loc").value.trim()&&`Location: ${$("#p-loc").value.trim()}.`,
+  "Opening: a strong visual hook in the first 2 seconds, then a clear middle and a satisfying ending.","Camera: slow push-in, then one wide establishing shot; smooth, stable movement.","Lighting and mood: rich colors with purple and blue tones, soft glow, high detail.",`Voice-over and on-screen text language: ${$("#p-lang").value}.`,"Avoid: distorted hands or faces, unreadable text, watermarks."].filter(Boolean);
+  $("#out").textContent=lines.join("\n");$("#out-card").hidden=false;$("#copy").textContent=T("copy")};
+$("#copy").onclick=async()=>{try{await navigator.clipboard.writeText($("#out").textContent);$("#copy").textContent=T("copied")}catch{}};
+
+// ===== Notes (device only) =====
+let editId=null;
+function renderNotes(){
+  const q=$("#n-q").value.toLowerCase(),c=$("#n-cat").value;
+  const list=store.get("notes",[]).filter(n=>(c==="all"||String(n.c)===c)&&(n.t+" "+n.b).toLowerCase().includes(q));
+  $("#n-list").innerHTML=list.length?list.map(n=>`<div class="card"><b></b><span class="m"> · ${T("cats")[n.c]}</span><p class="m" style="white-space:pre-wrap"></p><p class="m">${new Date(n.u).toLocaleString(L==="so"?"so-SO":"en-US")}</p>
+   <button data-e="${n.id}">${T("edit")}</button> <button data-d="${n.id}">${T("del")}</button></div>`).join(""):`<p class="m">${T("empty")}</p>`;
+  $$("#n-list .card").forEach((el,i)=>{el.querySelector("b").textContent=list[i].t;el.querySelector("p").textContent=list[i].b}); // textContent: no HTML injection
+  $$("[data-d]").forEach(b=>b.onclick=()=>{store.set("notes",store.get("notes",[]).filter(n=>n.id!==b.dataset.d));renderNotes()});
+  $$("[data-e]").forEach(b=>b.onclick=()=>{const n=store.get("notes",[]).find(x=>x.id===b.dataset.e);editId=n.id;$("#n-title").value=n.t;$("#n-body").value=n.b;$("#n-c2").value=n.c;$("#n-cancel").hidden=false;scrollTo(0,0)});
+}
+["#n-q","#n-cat"].forEach(s=>$(s).oninput=renderNotes);
+$("#n-cancel").onclick=()=>{editId=null;$("#n-title").value=$("#n-body").value="";$("#n-cancel").hidden=true};
+$("#n-save").onclick=()=>{const t=$("#n-title").value.trim();if(!t){$("#n-title").focus();return}
+  const all=store.get("notes",[]),n={id:editId||crypto.randomUUID(),t,b:$("#n-body").value,c:+$("#n-c2").value,u:Date.now()};
+  store.set("notes",editId?all.map(x=>x.id===editId?n:x):[n,...all]);$("#n-cancel").onclick();renderNotes()};
+
+// ===== Games =====
+const setScore=s=>{$("#sc").textContent=s;const k="best-"+game,b=store.get(k,0);if(s>b)store.set(k,s);$("#bs").textContent=Math.max(s,b)};
+$$("[data-g]").forEach(b=>b.onclick=()=>{game=b.dataset.g;$$("[data-g]").forEach(x=>x.classList.toggle("on",x===b));startGame()});
+$("#restart").onclick=()=>startGame();
+function startGame(){if(stop){stop();stop=null}$("#gmsg").textContent="";$("#pad").hidden=true;$("#sc").textContent=0;$("#bs").textContent=store.get("best-"+game,0);({ttt,mem,snk})[game]()}
+function ttt(){const LN=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]],b=Array(9).fill(""),W=x=>{for(const[a,c,d]of LN)if(x[a]&&x[a]===x[c]&&x[a]===x[d])return x[a]};
+  let over=false;const draw=()=>{$("#arena").innerHTML=`<div class="ttt">${b.map((v,i)=>`<button data-i="${i}">${v}</button>`).join("")}</div>`;$$(".ttt button").forEach(x=>x.onclick=()=>play(+x.dataset.i))};
+  const end=()=>{const w=W(b);if(w||b.every(Boolean)){over=true;$("#gmsg").textContent=w==="X"?T("win"):w==="O"?T("lose"):T("draw");if(w==="X")setScore(+$("#sc").textContent+3);else if(!w)setScore(+$("#sc").textContent+1);return true}};
+  function play(i){if(b[i]||over)return;b[i]="X";draw();if(end())return;
+    const e=b.map((v,j)=>v?-1:j).filter(j=>j>=0),f=p=>e.find(j=>{const c=[...b];c[j]=p;return W(c)===p});
+    let m=f("O");if(m===undefined){m=f("X");if(m===undefined||Math.random()>.85)m=b[4]===""&&Math.random()<.6?4:e[Math.random()*e.length|0]}
+    setTimeout(()=>{if(over)return;b[m]="O";draw();end()},300)}
+  draw()}
+function mem(){const E=["🚀","🎮","🧠","🎬","💡","🌙","⚡","🎧"],c=[...E,...E].sort(()=>Math.random()-.5).map((e,i)=>({e,i,o:0,d:0}));let sel=[],mv=0,t0=0,lock=false;
+  const draw=()=>{$("#arena").innerHTML=`<div class="mem">${c.map(x=>`<button data-i="${x.i}">${x.o||x.d?x.e:""}</button>`).join("")}</div>`;$$(".mem button").forEach(b=>b.onclick=()=>flip(+b.dataset.i))};
+  function flip(i){const x=c.find(z=>z.i===i);if(lock||x.o||x.d)return;if(!t0)t0=Date.now();x.o=1;sel.push(x);draw();
+    if(sel.length===2){mv++;lock=true;setTimeout(()=>{const[a,b]=sel;if(a.e===b.e)a.d=b.d=1;a.o=b.o=0;sel=[];lock=false;draw();
+      if(c.every(z=>z.d)){const s=Math.max(50,1000-mv*20-Math.round((Date.now()-t0)/500));setScore(s);$("#gmsg").textContent=T("win")+" ("+mv+")"}},650)}}
+  draw()}
+function snk(){const N=16;let s=[{x:8,y:8},{x:7,y:8},{x:6,y:8}],d={x:1,y:0},p=d,f={x:12,y:8},sc=0,ts=null;
+  const rf=()=>{do f={x:Math.random()*N|0,y:Math.random()*N|0};while(s.some(q=>q.x===f.x&&q.y===f.y))},turn=(x,y)=>{if(x!==-d.x||y!==-d.y)p={x,y}};
+  const draw=()=>{let h="";for(let y=0;y<N;y++)for(let x=0;x<N;x++){const k=s[0].x===x&&s[0].y===y?"h":s.some(q=>q.x===x&&q.y===y)?"s":f.x===x&&f.y===y?"f":"";h+=`<i class="${k}"></i>`}$("#arena").innerHTML=`<div class="snk" id="sg">${h}</div>`;
+    $("#sg").ontouchstart=e=>ts={x:e.touches[0].clientX,y:e.touches[0].clientY};$("#sg").ontouchend=e=>{if(!ts)return;const dx=e.changedTouches[0].clientX-ts.x,dy=e.changedTouches[0].clientY-ts.y;if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;Math.abs(dx)>Math.abs(dy)?turn(dx>0?1:-1,0):turn(0,dy>0?1:-1)}};
+  $("#pad").hidden=false;$("#pad").innerHTML=`<span></span><button data-k="0,-1">↑</button><span></span><button data-k="-1,0">←</button><button data-k="0,1">↓</button><button data-k="1,0">→</button>`;
+  $$("#pad button").forEach(b=>b.onclick=()=>turn(...b.dataset.k.split(",").map(Number)));
+  const key=e=>{const m={ArrowUp:[0,-1],w:[0,-1],ArrowDown:[0,1],s:[0,1],ArrowLeft:[-1,0],a:[-1,0],ArrowRight:[1,0],d:[1,0]}[e.key];if(m){e.preventDefault();turn(...m)}};addEventListener("keydown",key);
+  const id=setInterval(()=>{d=p;const h={x:s[0].x+d.x,y:s[0].y+d.y};if(h.x<0||h.y<0||h.x>=N||h.y>=N||s.some(q=>q.x===h.x&&q.y===h.y)){clearInterval(id);$("#gmsg").textContent=T("over");return}
+    s.unshift(h);if(h.x===f.x&&h.y===f.y){sc+=10;setScore(sc);rf()}else s.pop();draw()},130);
+  stop=()=>{clearInterval(id);removeEventListener("keydown",key)};draw()}
+
+addEventListener("hashchange",()=>{const v=location.hash.slice(1);if(VIEWS.includes(v)&&v!==view)go(v)});
+const h0=location.hash.slice(1);if(VIEWS.includes(h0))view=h0;render();go(view);
+</script>
+</body>
+</html>
